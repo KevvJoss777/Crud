@@ -1,13 +1,26 @@
 <?php
 require __DIR__ . '/includes/funciones.php';
-$id = $_GET['id'];
-$usuario = obtener_usuario_por_id($id);
-    if ($_POST) {
-        $_POST['id'] = $id;
-        editar_usuario($_POST);
-    }
-?>
 
+if (!isset($_GET['id']) || empty($_GET['id'])) {
+    die("Error: ID no proporcionado");
+}
+
+$id = intval($_GET['id']);
+
+$usuario = obtener_usuario_por_id($id);
+
+if (!$usuario) {
+    die("Error: Usuario no encontrado");
+}
+
+if ($_POST) {
+    $_POST['id'] = $id;
+    editar_usuario($_POST);
+
+    header("Location: index.php");
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html>
 <head>
